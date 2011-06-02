@@ -1,0 +1,25 @@
+{
+  "name": "R2",
+  "description": "a CSS LTR ∞ RTL converter",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ded/r2",
+  "author": "Dustin Diaz <@ded>",
+  "main": "r2.js",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ded/R2.git"
+  },
+  "engines": {
+    "node": ">= 0.4.1"
+  },
+  "bin": {
+    "r2": "bin/r2"
+  },
+  "directories": {
+    "bin": "bin"
+  },
+  "dependencies": {
+    "sqwish": ">= 0.2.0"
+  }
+}
