@@ -57,7 +57,6 @@ function r2(css) {
       var m = decl.match(/([^:]+):([^;]+)$/),
           prop = m[1],
           val = m[2];
-          console.log(prop, val);
       prop = propertyMap[prop] || prop;
       val = valueMap[prop] ? valueMap[prop](val) : val;
       return prop + ':' + val + ';'
