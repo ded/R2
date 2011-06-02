@@ -1,8 +1,6 @@
 R2
 ---
-<code>a CSS LTR ∞ RTL converter for i18 friendly layouts</code>
-
-R2 helps you achieve friendly layouts cross-language multiple languages (including bi-directional text). It looks like this:
+R2 helps you achieve cross-language layout-friendly websites (including bi-directional text). It looks like this:
 
 ``` css
 /* before */
@@ -46,3 +44,5 @@ var output = require('r2').swap(css)
 Caution
 --------
 R2 will only work as good as what you give it, therefore *inline-styles* embedded in your HTML will not converted, and therefore may cause unexpected results. However inline-styles apart from R2 is still a bad idea, and you should avoid it anyway in favor of separating content from presentation.
+
+**Happy layout Swapping!**
