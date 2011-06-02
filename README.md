@@ -1,24 +1,7 @@
 R2
 ---
-a CSS LTR ∞ RTL converter for i18 friendly layouts
+<code>a CSS LTR ∞ RTL converter for i18 friendly layouts</code>
 
-Install it
-----------
-
-    $ [sudo] npm install r2 -g
-
-Use it as a CLI
-
-    $ r2 input.css output.css
-
-Or require it as a Node module
-
-``` js
-var output = require('r2').swap(css)
-```
-
-Usage notes
---------
 R2 helps you achieve friendly layouts cross-language multiple languages (including bi-directional text). It looks like this:
 
 ``` css
@@ -43,6 +26,21 @@ body {
 div {
   text-align: left;
 }
+```
+
+Install it
+----------
+
+    $ [sudo] npm install r2 -g
+
+Use it as a CLI
+
+    $ r2 input.css output.css
+
+Or require it as a Node module
+
+``` js
+var output = require('r2').swap(css)
 ```
 
 Caution
