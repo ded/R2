@@ -29,7 +29,7 @@ R2 helps you achieve cross-language layout-friendly websites (including bi-direc
 Install it
 ----------
 
-    $ [sudo] npm install r2 -g
+    $ [sudo] npm install R2 -g
 
 Use it as a CLI
 
