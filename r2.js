@@ -29,12 +29,21 @@ function rtltr(v) {
 var propertyMap = {
   'margin-left': 'margin-right',
   'margin-right': 'margin-left',
+
   'padding-left': 'padding-right',
   'padding-right': 'padding-left',
+
   'border-left': 'border-right',
   'border-right': 'border-left',
+
   'border-left-width': 'border-right-width',
   'border-right-width': 'border-left-width',
+
+  'border-radius-bottomleft': 'border-radius-bottomright',
+  'border-radius-bottomright': 'border-radius-bottomleft',
+  '-moz-border-radius-bottomright': '-moz-border-radius-bottomleft',
+  '-moz-border-radius-bottomleft': '-moz-border-radius-bottomright',
+
   'left': 'right',
   'right': 'left'
 }
