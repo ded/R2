@@ -16,6 +16,10 @@ function quad(v, m) {
   return v
 }
 
+function direction(v) {
+  return v == 'ltr' ? 'rtl' : v == 'rtl' ? 'ltr' : v
+}
+
 function rtltr(v) {
   if (v == 'left') return 'right'
   if (v == 'right') return 'left'
@@ -39,7 +43,8 @@ var valueMap = {
   'padding': quad,
   'margin': quad,
   'text-align': rtltr,
-  'float': rtltr
+  'float': rtltr,
+  'direction': direction
 }
 
 function r2(css) {
