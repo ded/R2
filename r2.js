@@ -5,8 +5,7 @@
   * License MIT
   */
 
-var fs = require('fs'),
-    sqwish = require('sqwish');
+var fs = require('fs');
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
@@ -58,7 +57,19 @@ var valueMap = {
 
 function r2(css) {
 
-  css = sqwish.minify(css);
+  css = css.trim() // give it a solid trimming to start
+
+  // comments
+  .replace(/\/\*[\s\S]+?\*\//g, '')
+
+  // line breaks and carriage returns
+  .replace(/[\n\r]/g, '')
+
+  // space between selectors, declarations, properties and values
+  .replace(/\s*([:;,{}])\s*/g, '$1')
+
+  // replace multiple spaces with single spaces
+  .replace(/\s+/g, ' ')
 
   var result = css.match(/([^{]+\{[^}]+\})+?/g).map(function (rule) {
 
@@ -67,10 +78,14 @@ function r2(css) {
         selector = parts[1],
         declarations = parts[2];
 
-    return selector + '{' + declarations.split(';').map(function (decl) {
-      var m = decl.match(/([^:]+):([^;]+)$/),
-          prop = m[1],
-          val = m[2];
+    return selector + '{' + declarations.split(/;(?!base64)/).map(function (decl) {
+      if (!decl) return ''
+      var m = decl.match(/([^:]+):(.+)$/);
+      if (!m) {
+        return ''
+      }
+      prop = m[1],
+      val = m[2];
       prop = propertyMap[prop] || prop;
       val = valueMap[prop] ? valueMap[prop](val) : val;
       return prop + ':' + val + ';'
