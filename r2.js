@@ -52,6 +52,7 @@ var valueMap = {
   'margin': quad,
   'text-align': rtltr,
   'float': rtltr,
+  'clear': rtltr,
   'direction': direction
 }
 
