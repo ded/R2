@@ -79,7 +79,10 @@ var valueMap = {
   'direction': direction,
   '-webkit-border-radius' :  quad_radius,
   '-moz-border-radius' :  quad_radius,
-  'border-radius' :  quad_radius
+  'border-radius' :  quad_radius,
+  'border-color': quad,
+  'border-width': quad,
+  'border-style': quad
 }
 
 function r2(css) {
