@@ -1,11 +1,11 @@
 /*!
   * R2 - a CSS LTR ∞ RTL converter
-  * Copyright Dustin Diaz 2011
+  * Copyright Dustin Diaz 2012
   * https://github.com/ded/r2
   * License MIT
   */
 
-var fs = require('fs');
+var fs = require('fs')
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
@@ -36,38 +36,38 @@ function rtltr(v) {
 }
 
 var propertyMap = {
-  'margin-left': 'margin-right',
-  'margin-right': 'margin-left',
+    'margin-left': 'margin-right'
+  , 'margin-right': 'margin-left'
 
-  'padding-left': 'padding-right',
-  'padding-right': 'padding-left',
+  , 'padding-left': 'padding-right'
+  , 'padding-right': 'padding-left'
 
-  'border-left': 'border-right',
-  'border-right': 'border-left',
+  , 'border-left': 'border-right'
+  , 'border-right': 'border-left'
 
-  'border-left-width': 'border-right-width',
-  'border-right-width': 'border-left-width',
+  , 'border-left-width': 'border-right-width'
+  , 'border-right-width': 'border-left-width'
 
-  'border-radius-bottomleft': 'border-radius-bottomright',
-  'border-radius-bottomright': 'border-radius-bottomleft',
-  'border-bottom-right-radius': 'border-bottom-left-radius',
-  'border-bottom-left-radius': 'border-bottom-right-radius',
-  '-webkit-border-bottom-right-radius': '-webkit-border-bottom-left-radius',
-  '-webkit-border-bottom-left-radius': '-webkit-border-bottom-right-radius',
-  '-moz-border-radius-bottomright': '-moz-border-radius-bottomleft',
-  '-moz-border-radius-bottomleft': '-moz-border-radius-bottomright',
-  
-  'border-radius-topleft': 'border-radius-topright',
-  'border-radius-topright': 'border-radius-topleft',
-  'border-top-right-radius': 'border-top-left-radius',
-  'border-top-left-radius': 'border-top-right-radius',
-  '-webkit-border-top-right-radius': '-webkit-border-top-left-radius',
-  '-webkit-border-top-left-radius': '-webkit-border-top-right-radius',
-  '-moz-border-radius-topright': '-moz-border-radius-topleft',
-  '-moz-border-radius-topleft': '-moz-border-radius-topright',
+  , 'border-radius-bottomleft': 'border-radius-bottomright'
+  , 'border-radius-bottomright': 'border-radius-bottomleft'
+  , 'border-bottom-right-radius': 'border-bottom-left-radius'
+  , 'border-bottom-left-radius': 'border-bottom-right-radius'
+  , '-webkit-border-bottom-right-radius': '-webkit-border-bottom-left-radius'
+  , '-webkit-border-bottom-left-radius': '-webkit-border-bottom-right-radius'
+  , '-moz-border-radius-bottomright': '-moz-border-radius-bottomleft'
+  , '-moz-border-radius-bottomleft': '-moz-border-radius-bottomright'
 
-  'left': 'right',
-  'right': 'left'
+  , 'border-radius-topleft': 'border-radius-topright'
+  , 'border-radius-topright': 'border-radius-topleft'
+  , 'border-top-right-radius': 'border-top-left-radius'
+  , 'border-top-left-radius': 'border-top-right-radius'
+  , '-webkit-border-top-right-radius': '-webkit-border-top-left-radius'
+  , '-webkit-border-top-left-radius': '-webkit-border-top-right-radius'
+  , '-moz-border-radius-topright': '-moz-border-radius-topleft'
+  , '-moz-border-radius-topleft': '-moz-border-radius-topright'
+
+  , 'left': 'right'
+  , 'right': 'left'
 }
 
 var valueMap = {
@@ -104,38 +104,37 @@ function r2(css) {
   var result = css.match(/([^{]+\{[^}]+\})+?/g).map(function (rule) {
 
     // break rule into selector|declaration parts
-    var parts = rule.match(/([^{]+)\{([^}]+)/),
-        selector = parts[1],
-        declarations = parts[2];
+    var parts = rule.match(/([^{]+)\{([^}]+)/)
+      , selector = parts[1]
+      , declarations = parts[2]
 
     return selector + '{' + declarations.split(/;(?!base64)/).map(function (decl) {
       if (!decl) return ''
-      var m = decl.match(/([^:]+):(.+)$/);
-      if (!m) {
-        return ''
-      }
-      prop = m[1],
-      val = m[2];
-      prop = propertyMap[prop] || prop;
-      val = valueMap[prop] ? valueMap[prop](val) : val;
+      var m = decl.match(/([^:]+):(.+)$/)
+      if (!m) return ''
+      var prop = m[1]
+        , val = m[2]
+      prop = propertyMap[prop] || prop
+      val = valueMap[prop] ? valueMap[prop](val) : val
       return prop + ':' + val + ';'
-    }).join('') + '}';
+    }).join('') + '}'
 
   });
 
-  return result.join('');
+  return result.join('')
 }
 
 
-
 module.exports.exec = function (args) {
-  var out;
-  var read = args[0];
-  var out = args[1];
-  console.log('Swapping ' + read + ' to ' + out + '...');
-  var data = fs.readFileSync(read, 'utf8');
-  fs.writeFileSync(out, r2(data), 'utf8');
-};
+  var out
+    , read = args[0]
+    , out = args[1]
+  console.log('Swapping ' + read + ' to ' + out + '...')
+  var data = fs.readFileSync(read, 'utf8')
+  fs.writeFileSync(out, r2(data), 'utf8')
+}
+
+
 module.exports.swap = function (css) {
-  return r2(css);
-};
+  return r2(css)
+}
