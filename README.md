@@ -44,7 +44,7 @@ Use it as a CLI
   
 ### Read from output of another command
     
-    $ lessc input.less | r2
+    $ lessc input.less | r2 > output.css
 
 Require it as a Node module
 ------------------------------
