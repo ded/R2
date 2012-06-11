@@ -129,11 +129,43 @@ module.exports.exec = function (args) {
   var out
     , read = args[0]
     , out = args[1]
-  console.log('Swapping ' + read + ' to ' + out + '...')
-  var data = fs.readFileSync(read, 'utf8')
-  fs.writeFileSync(out, r2(data), 'utf8')
-}
+    , data
 
+  /*
+  /  If no read arg then read from stdin
+  /  allows for standard piping and reading in
+  /  ex: lessc file.less | r2 > file-rtl.css
+  /  ex:  r2 < file.css
+  */
+  if (!read) {
+    var buffer = ''
+    process.stdin.resume()
+    process.stdin.setEncoding('utf8')
+    
+    process.stdin.on('data', function(chunk) {
+      buffer += chunk
+    });
+
+    process.stdin.on('end', function() {
+      if (buffer) {
+        console.log(r2(buffer))
+      }
+    });
+  } else {
+    /* 
+    /  If reading from a file then print to stdout or out arg
+    /  To stdout: r2 styles.css
+    /  To file: r2 styles.cc styles-rtl.css
+    */
+    data = fs.readFileSync(read, 'utf8') 
+    if (out) {
+      console.log('Swapping ' + read + ' to ' + out + '...')
+      fs.writeFileSync(out, r2(data), 'utf8')
+    } else {
+      console.log(r2(data))
+    }
+  }
+}
 
 module.exports.swap = function (css) {
   return r2(css)
