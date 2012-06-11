@@ -32,10 +32,22 @@ Install it
     $ [sudo] npm install R2 -g
 
 Use it as a CLI
+---------------
 
+### Print to stdout
+    
+    $ r2 input.css
+  
+### Print to output file
+    
     $ r2 input.css output.css
+  
+### Read from output of another command
+    
+    $ lessc input.less | r2
 
-Or require it as a Node module
+Require it as a Node module
+------------------------------
 
 ``` js
 var output = require('r2').swap(css)
