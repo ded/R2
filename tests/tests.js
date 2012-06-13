@@ -140,9 +140,26 @@ sink('clear', function(test, ok, before, after, assert) {
 })
 
 sink('text-align', function(test, ok, before, after, assert) {
-  test('should text alignment', function(done) {
+  test('should swap text alignment', function(done) {
     assert.equal(swap('p{text-align:right;}'), 'p{text-align:left;}', 'text-align: left => text-align: right')
     assert.equal(swap('p{text-align:left;}'), 'p{text-align:right;}', 'text-align: right => text-align: left')
+    done()
+  })
+})
+
+sink('position', function(test, ok, before, after, assert) {
+  test('should swap right/left', function(done) {
+    assert.equal(swap('p{left:50%;}'), 'p{right:50%;}', 'left: 50% => right: 50%')
+    assert.equal(swap('p{right:50%;}'), 'p{left:50%;}', 'right: 50% => left: 50%')
+    done()
+  })
+})
+
+sink('direction', function(test, ok, before, after, assert) {
+  test('should swap direction', function(done) {
+    assert.equal(swap('p{direction:rtl;}'), 'p{direction:ltr;}', 'direction: rtl => direction: ltr')
+    assert.equal(swap('p{direction:ltr;}'), 'p{direction:rtl;}', 'direction: ltr => direction: rtl')
+    assert.equal(swap('p{direction:foo;}'), 'p{direction:foo;}', 'direction: foo => direction: foo')
     done()
   })
 })
