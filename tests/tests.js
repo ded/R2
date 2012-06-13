@@ -57,41 +57,78 @@ sink('border-radius', function(test, ok, before, after, assert) {
     assert.equal(swap('p{-webkit-border-radius:0 1px 2px 3px;}'), 'p{-webkit-border-radius:1px 0 3px 2px;}', '-webkit-border-radius: 0 1px 2px 3px => -webkit-border-radius: 1px 0 3px 2px')
   })
 
-  test('should swap top-left', 0, function() {
-  
+  test('should swap top-left', 3, function() {
+    assert.equal(swap('p{border-top-left-radius:5px;}'), 'p{border-top-right-radius:5px;}', 'border-top-left-radius:5px => border-top-right-radius: 5px')
+    assert.equal(swap('p{-moz-border-radius-topleft:5px;}'), 'p{-moz-border-radius-topright:5px;}', '-moz-border-radius-topleft:5px => -moz-border-radius-topright: 5px') 
+    assert.equal(swap('p{-webkit-border-top-left-radius:5px;}'), 'p{-webkit-border-top-right-radius:5px;}', '-webkit-border-top-left-radius:5px => -webkit-border-top-right-radius: 5px') 
   })
 
-  test('should swap top-right', 0, function() {
-  
+  test('should swap top-right', 3, function() {
+    assert.equal(swap('p{border-top-right-radius:5px;}'), 'p{border-top-left-radius:5px;}', 'border-top-right-radius:5px => border-top-left-radius: 5px')
+    assert.equal(swap('p{-moz-border-radius-topright:5px;}'), 'p{-moz-border-radius-topleft:5px;}', '-moz-border-radius-topright:5px => -moz-border-radius-topleft: 5px') 
+    assert.equal(swap('p{-webkit-border-top-right-radius:5px;}'), 'p{-webkit-border-top-left-radius:5px;}', '-webkit-border-top-right-radius:5px => -webkit-border-top-left-radius: 5px') 
   })
 
-  test('should swap bottom-left', 0, function() {
-  
+  test('should swap bottom-left', 3, function() {
+    assert.equal(swap('p{border-bottom-left-radius:5px;}'), 'p{border-bottom-right-radius:5px;}', 'border-bottom-left-radius:5px => border-bottom-right-radius: 5px')
+    assert.equal(swap('p{-moz-border-radius-bottomleft:5px;}'), 'p{-moz-border-radius-bottomright:5px;}', '-moz-border-radius-bottomleft:5px => -moz-border-radius-bottomright: 5px') 
+    assert.equal(swap('p{-webkit-border-bottom-left-radius:5px;}'), 'p{-webkit-border-bottom-right-radius:5px;}', '-webkit-border-bottom-left-radius:5px => -webkit-border-bottom-right-radius: 5px') 
   })
   
-  test('should swap bottom-right', 0, function() {
-  
+  test('should swap bottom-right', 3, function() {
+    assert.equal(swap('p{border-bottom-right-radius:5px;}'), 'p{border-bottom-left-radius:5px;}', 'border-bottom-right-radius:5px => border-bottom-left-radius: 5px')
+    assert.equal(swap('p{-moz-border-radius-bottomright:5px;}'), 'p{-moz-border-radius-bottomleft:5px;}', '-moz-border-radius-bottomright:5px => -moz-border-radius-bottomleft: 5px') 
+    assert.equal(swap('p{-webkit-border-bottom-right-radius:5px;}'), 'p{-webkit-border-bottom-left-radius:5px;}', '-webkit-border-bottom-right-radius:5px => -webkit-border-bottom-left-radius: 5px') 
   })
 })
 
 sink('padding', function(test, ok, before, after, assert) {
+  test('should swap shorthand properties', 4, function() {
+    assert.equal(swap('p{padding:0;}'), 'p{padding:0;}', 'padding: 0 => padding: 0')
+    assert.equal(swap('p{padding:0 1px;}'), 'p{padding:0 1px;}', 'padding: 0 1px => padding: 0 1px')
+    assert.equal(swap('p{padding:0 1px 2px;}'), 'p{padding:0 1px 2px;}', 'padding: 0 1px 2px => padding: 0 1px 2px')
+    assert.equal(swap('p{padding:0 1px 2px 3px;}'), 'p{padding:0 3px 2px 1px;}', 'padding: 0 1px 2px 3px => padding: 0 3px 2px 1px')
+  })
 
+  test('should swap longhand properties', 2, function() {
+    assert.equal(swap('p{padding-left:0;}'), 'p{padding-right:0;}', 'padding-right: 0 => padding-left: 0')
+    assert.equal(swap('p{padding-right:0;}'), 'p{padding-left:0;}', 'padding-elft: 0 => padding-right: 0')
+  })
 })
 
 sink('margin', function(test, ok, before, after, assert) {
+  test('should swap shorthand properties', 4, function() {
+    assert.equal(swap('p{margin:0;}'), 'p{margin:0;}', 'margin: 0 => margin: 0')
+    assert.equal(swap('p{margin:0 1px;}'), 'p{margin:0 1px;}', 'margin: 0 1px => margin: 0 1px')
+    assert.equal(swap('p{margin:0 1px 2px;}'), 'p{margin:0 1px 2px;}', 'margin: 0 1px 2px => margin: 0 1px 2px')
+    assert.equal(swap('p{margin:0 1px 2px 3px;}'), 'p{margin:0 3px 2px 1px;}', 'margin: 0 1px 2px 3px => margin: 0 3px 2px 1px')
+  })
 
+  test('should swap longhand properties', 2, function() {
+    assert.equal(swap('p{margin-left:0;}'), 'p{margin-right:0;}', 'margin-right: 0 => margin-left: 0')
+    assert.equal(swap('p{margin-right:0;}'), 'p{margin-left:0;}', 'margin-elft: 0 => margin-right: 0')
+  })
 })
 
 sink('float', function(test, ok, before, after, assert) {
-
+  test('should swap float direction',2, function() {
+    assert.equal(swap('p{float:right;}'), 'p{float:left;}', 'float: left => float: right')
+    assert.equal(swap('p{float:left;}'), 'p{float:right;}', 'float: right => float: left')
+  })
 })
 
 sink('clear', function(test, ok, before, after, assert) {
-
+  test('should swap clear direction',2, function() {
+    assert.equal(swap('p{clear:right;}'), 'p{clear:left;}', 'clear: left => clear: right')
+    assert.equal(swap('p{clear:left;}'), 'p{clear:right;}', 'clear: right => clear: left')
+  })
 })
 
 sink('text-align', function(test, ok, before, after, assert) {
-
+  test('should text alignment',2, function() {
+    assert.equal(swap('p{text-align:right;}'), 'p{text-align:left;}', 'text-align: left => text-align: right')
+    assert.equal(swap('p{text-align:left;}'), 'p{text-align:right;}', 'text-align: right => text-align: left')
+  })
 })
 
 start()
