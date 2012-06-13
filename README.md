@@ -41,6 +41,11 @@ Or require it as a Node module
 var output = require('r2').swap(css)
 ```
 
+Test It
+----------
+
+   $ npm test
+
 Caution
 --------
 R2 will only work as good as what you give it, therefore *inline-styles* embedded in your HTML will not converted, and therefore may cause unexpected results. However inline-styles apart from R2 is still a bad idea, and you should avoid it anyway in favor of separating content from presentation.
