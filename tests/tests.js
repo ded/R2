@@ -38,24 +38,24 @@ sink('border', function(test, ok, before, after, assert) {
 })
 
 sink('border-radius', function(test, ok, before, after, assert) {
-  
+
   test('should swap border-radius', function(done) {
     // radius
     assert.equal(swap('p{border-radius:0;}'), 'p{border-radius:0;}', 'border-radius: 0 => border-radius: 0')
     assert.equal(swap('p{-moz-border-radius:0;}'), 'p{-moz-border-radius:0;}', '-moz-border-radius: 0 => -moz-border-radius: 0')
     assert.equal(swap('p{-webkit-border-radius:0;}'), 'p{-webkit-border-radius:0;}', '-webkit-border-radius: 0 => -webkit-border-radius: 0')
 
-    // top-left-and-bottom-right top-right-and-bottom-left 
+    // top-left-and-bottom-right top-right-and-bottom-left
     assert.equal(swap('p{border-radius:0 1px;}'), 'p{border-radius:1px 0;}', 'border-radius: 0 1px => border-radius: 1px 0')
     assert.equal(swap('p{-moz-border-radius:0 1px;}'), 'p{-moz-border-radius:1px 0;}', '-moz-border-radius: 0 1px => -moz-border-radius: 1px 0')
     assert.equal(swap('p{-webkit-border-radius:0 1px;}'), 'p{-webkit-border-radius:1px 0;}', '-webkit-border-radius: 0 1px => -webkit-border-radius: 1px 0')
 
-    // top-left top-right-and-bottom-left bottom-right 
+    // top-left top-right-and-bottom-left bottom-right
     assert.equal(swap('p{border-radius:0 1px 2px;}'), 'p{border-radius:1px 0 1px 2px;}', 'border-radius: 0 1px 2px => border-radius: 1px 0 1px 2px')
     assert.equal(swap('p{-moz-border-radius:0 1px 2px;}'), 'p{-moz-border-radius:1px 0 1px 2px;}', '-moz-border-radius: 0 1px 2px => -moz-border-radius: 1px 0 1px 2px')
     assert.equal(swap('p{-webkit-border-radius:0 1px 2px;}'), 'p{-webkit-border-radius:1px 0 1px 2px;}', '-webkit-border-radius: 0 1px 2px => border-radius: 1px 0 1px 2px')
 
-    // top-left top-right bottom-right bottom-left 
+    // top-left top-right bottom-right bottom-left
     assert.equal(swap('p{border-radius:0 1px 2px 3px;}'), 'p{border-radius:1px 0 3px 2px;}', 'border-radius: 0 1px 2px 3px => border-radius: 1px 0 3px 2px')
     assert.equal(swap('p{-moz-border-radius:0 1px 2px 3px;}'), 'p{-moz-border-radius:1px 0 3px 2px;}', '-moz-border-radius: 0 1px 2px 3px => -moz-border-radius: 1px 0 3px 2px')
     assert.equal(swap('p{-webkit-border-radius:0 1px 2px 3px;}'), 'p{-webkit-border-radius:1px 0 3px 2px;}', '-webkit-border-radius: 0 1px 2px 3px => -webkit-border-radius: 1px 0 3px 2px')
@@ -64,28 +64,28 @@ sink('border-radius', function(test, ok, before, after, assert) {
 
   test('should swap top-left', function(done) {
     assert.equal(swap('p{border-top-left-radius:5px;}'), 'p{border-top-right-radius:5px;}', 'border-top-left-radius:5px => border-top-right-radius: 5px')
-    assert.equal(swap('p{-moz-border-radius-topleft:5px;}'), 'p{-moz-border-radius-topright:5px;}', '-moz-border-radius-topleft:5px => -moz-border-radius-topright: 5px') 
+    assert.equal(swap('p{-moz-border-radius-topleft:5px;}'), 'p{-moz-border-radius-topright:5px;}', '-moz-border-radius-topleft:5px => -moz-border-radius-topright: 5px')
     assert.equal(swap('p{-webkit-border-top-left-radius:5px;}'), 'p{-webkit-border-top-right-radius:5px;}', '-webkit-border-top-left-radius:5px => -webkit-border-top-right-radius: 5px')
     done()
   })
 
   test('should swap top-right', function(done) {
     assert.equal(swap('p{border-top-right-radius:5px;}'), 'p{border-top-left-radius:5px;}', 'border-top-right-radius:5px => border-top-left-radius: 5px')
-    assert.equal(swap('p{-moz-border-radius-topright:5px;}'), 'p{-moz-border-radius-topleft:5px;}', '-moz-border-radius-topright:5px => -moz-border-radius-topleft: 5px') 
+    assert.equal(swap('p{-moz-border-radius-topright:5px;}'), 'p{-moz-border-radius-topleft:5px;}', '-moz-border-radius-topright:5px => -moz-border-radius-topleft: 5px')
     assert.equal(swap('p{-webkit-border-top-right-radius:5px;}'), 'p{-webkit-border-top-left-radius:5px;}', '-webkit-border-top-right-radius:5px => -webkit-border-top-left-radius: 5px')
     done()
   })
 
   test('should swap bottom-left', function(done) {
     assert.equal(swap('p{border-bottom-left-radius:5px;}'), 'p{border-bottom-right-radius:5px;}', 'border-bottom-left-radius:5px => border-bottom-right-radius: 5px')
-    assert.equal(swap('p{-moz-border-radius-bottomleft:5px;}'), 'p{-moz-border-radius-bottomright:5px;}', '-moz-border-radius-bottomleft:5px => -moz-border-radius-bottomright: 5px') 
+    assert.equal(swap('p{-moz-border-radius-bottomleft:5px;}'), 'p{-moz-border-radius-bottomright:5px;}', '-moz-border-radius-bottomleft:5px => -moz-border-radius-bottomright: 5px')
     assert.equal(swap('p{-webkit-border-bottom-left-radius:5px;}'), 'p{-webkit-border-bottom-right-radius:5px;}', '-webkit-border-bottom-left-radius:5px => -webkit-border-bottom-right-radius: 5px')
     done()
   })
-  
+
   test('should swap bottom-right', function(done) {
     assert.equal(swap('p{border-bottom-right-radius:5px;}'), 'p{border-bottom-left-radius:5px;}', 'border-bottom-right-radius:5px => border-bottom-left-radius: 5px')
-    assert.equal(swap('p{-moz-border-radius-bottomright:5px;}'), 'p{-moz-border-radius-bottomleft:5px;}', '-moz-border-radius-bottomright:5px => -moz-border-radius-bottomleft: 5px') 
+    assert.equal(swap('p{-moz-border-radius-bottomright:5px;}'), 'p{-moz-border-radius-bottomleft:5px;}', '-moz-border-radius-bottomright:5px => -moz-border-radius-bottomleft: 5px')
     assert.equal(swap('p{-webkit-border-bottom-right-radius:5px;}'), 'p{-webkit-border-bottom-left-radius:5px;}', '-webkit-border-bottom-right-radius:5px => -webkit-border-bottom-left-radius: 5px')
     done()
   })
@@ -160,6 +160,13 @@ sink('direction', function(test, ok, before, after, assert) {
     assert.equal(swap('p{direction:rtl;}'), 'p{direction:ltr;}', 'direction: rtl => direction: ltr')
     assert.equal(swap('p{direction:ltr;}'), 'p{direction:rtl;}', 'direction: ltr => direction: rtl')
     assert.equal(swap('p{direction:foo;}'), 'p{direction:foo;}', 'direction: foo => direction: foo')
+    done()
+  })
+})
+
+sink('important', function (test, ok, b, a, assert) {
+  test('should retain important declaration', function (done) {
+    assert.equal(swap('p{float:left!important;}'), 'p{float:right!important;}', 'float:right!important => float:left!important')
     done()
   })
 })
