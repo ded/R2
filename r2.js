@@ -26,12 +26,12 @@ function quad_radius(v, m) {
 }
 
 function direction(v) {
-  return v == 'ltr' ? 'rtl' : v == 'rtl' ? 'ltr' : v
+  return v.match(/ltr/) ? 'rtl' : v.match(/rtl/) ? 'ltr' : v
 }
 
 function rtltr(v) {
-  if (v == 'left') return 'right'
-  if (v == 'right') return 'left'
+  if (v.match(/left/)) return 'right'
+  if (v.match(/right/)) return 'left'
   return v
 }
 
@@ -114,8 +114,11 @@ function r2(css) {
       if (!m) return ''
       var prop = m[1]
         , val = m[2]
+        , important = /!important/
+        , isImportant = val.match(important)
       prop = propertyMap[prop] || prop
       val = valueMap[prop] ? valueMap[prop](val) : val
+      if (!val.match(important) && isImportant) val += '!important'
       return prop + ':' + val + ';'
     }).join('') + '}'
 
@@ -141,7 +144,7 @@ module.exports.exec = function (args) {
     var buffer = ''
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
-    
+
     process.stdin.on('data', function(chunk) {
       buffer += chunk
     });
@@ -152,12 +155,12 @@ module.exports.exec = function (args) {
       }
     });
   } else {
-    /* 
+    /*
     /  If reading from a file then print to stdout or out arg
     /  To stdout: r2 styles.css
     /  To file: r2 styles.cc styles-rtl.css
     */
-    data = fs.readFileSync(read, 'utf8') 
+    data = fs.readFileSync(read, 'utf8')
     if (out) {
       console.log('Swapping ' + read + ' to ' + out + '...')
       fs.writeFileSync(out, r2(data), 'utf8')
