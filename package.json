@@ -18,5 +18,11 @@
   },
   "directories": {
     "bin": "bin"
+  },
+  "devDependencies": {
+    "sink-test": ">= 1.0.1"
+  },
+  "scripts": {
+    "test": "node tests/tests.js"
   }
 }
