@@ -45,6 +45,9 @@ var propertyMap = {
   , 'border-left': 'border-right'
   , 'border-right': 'border-left'
 
+  , 'border-left-color': 'border-right-color'
+  , 'border-right-color': 'border-left-color'
+
   , 'border-left-width': 'border-right-width'
   , 'border-right-width': 'border-left-width'
 
