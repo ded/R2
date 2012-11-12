@@ -28,6 +28,12 @@ sink('border', function(test, ok, before, after, assert) {
     done()
   })
 
+  test('should swap border color', function(done) {
+    assert.equal(swap('p{border-left-color:#fff;}'), 'p{border-right-color:#fff;}', 'border-left-color: #fff => border-right-color: #fff')
+    assert.equal(swap('p{border-right-color:#fff;}'), 'p{border-left-color:#fff;}', 'border-right-color: #fff => border-left-color: #fff')
+    done()
+  })
+
   test('should swap width', function(done) {
     assert.equal(swap('p{border-width:0;}'), 'p{border-width:0;}', 'border-width: 0 => border-width: 0')
     assert.equal(swap('p{border-width:0 1px;}'), 'p{border-width:0 1px;}', 'border-width: 0 1px => border-width: 0 1px')
