@@ -15,12 +15,18 @@ function quad(v, m) {
   return v
 }
 
-function quad_radius(v, m) {
+function quad_radius(v) {
+  var m = v.trim().split(/\s+/)
   // 1px 2px 3px 4px => 1px 2px 4px 3px
-  //since border-radius: top-left top-right bottom-right bottom-left
-  //will be border-radius: top-right top-left bottom-left bottom-right
-  if ((m = v.trim().split(/\s+/)) && m.length == 4) {
+  // since border-radius: top-left top-right bottom-right bottom-left
+  // will be border-radius: top-right top-left bottom-left bottom-right
+  if (m && m.length == 4) {
     return [m[1], m[0], m[3], m[2]].join(' ')
+  } else if (m && m.length == 3) {
+    // super odd how this works
+    // 5px 10px 20px => 10px 5px 10px 20px
+    // yeah it's pretty dumb
+    return [m[1], m[0], m[1], m[2]].join(' ')
   }
   return v
 }
@@ -32,6 +38,23 @@ function direction(v) {
 function rtltr(v) {
   if (v.match(/left/)) return 'right'
   if (v.match(/right/)) return 'left'
+  return v
+}
+
+function bgPosition(v) {
+  if (v.match(/\bleft\b/)) {
+    v = v.replace(/\bleft\b/, 'right')
+  } else if (v.match(/\bright\b/)) {
+    v = v.replace(/\bleft\b/, 'right')
+  }
+  var m = v.trim().split(/\s+/)
+  if (m && (m.length == 1) && v.match(/(\d+)([a-z]{2}|%)/)) {
+    v = 'right ' + v
+  }
+  if (m && m.length == 2 && m[0].match(/\d+%/)) {
+    // 30% => 70% (100 - x)
+    v = (100 - parseInt(m[0], 10)) + '% ' + m[1]
+  }
   return v
 }
 
@@ -80,12 +103,13 @@ var valueMap = {
   'float': rtltr,
   'clear': rtltr,
   'direction': direction,
-  '-webkit-border-radius' :  quad_radius,
-  '-moz-border-radius' :  quad_radius,
-  'border-radius' :  quad_radius,
+  '-webkit-border-radius': quad_radius,
+  '-moz-border-radius': quad_radius,
+  'border-radius': quad_radius,
   'border-color': quad,
   'border-width': quad,
-  'border-style': quad
+  'border-style': quad,
+  'background-position': bgPosition
 }
 
 function r2(css) {

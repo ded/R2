@@ -51,11 +51,6 @@ sink('border-radius', function(test, ok, before, after, assert) {
     assert.equal(swap('p{-moz-border-radius:0;}'), 'p{-moz-border-radius:0;}', '-moz-border-radius: 0 => -moz-border-radius: 0')
     assert.equal(swap('p{-webkit-border-radius:0;}'), 'p{-webkit-border-radius:0;}', '-webkit-border-radius: 0 => -webkit-border-radius: 0')
 
-    // top-left-and-bottom-right top-right-and-bottom-left
-    assert.equal(swap('p{border-radius:0 1px;}'), 'p{border-radius:1px 0;}', 'border-radius: 0 1px => border-radius: 1px 0')
-    assert.equal(swap('p{-moz-border-radius:0 1px;}'), 'p{-moz-border-radius:1px 0;}', '-moz-border-radius: 0 1px => -moz-border-radius: 1px 0')
-    assert.equal(swap('p{-webkit-border-radius:0 1px;}'), 'p{-webkit-border-radius:1px 0;}', '-webkit-border-radius: 0 1px => -webkit-border-radius: 1px 0')
-
     // top-left top-right-and-bottom-left bottom-right
     assert.equal(swap('p{border-radius:0 1px 2px;}'), 'p{border-radius:1px 0 1px 2px;}', 'border-radius: 0 1px 2px => border-radius: 1px 0 1px 2px')
     assert.equal(swap('p{-moz-border-radius:0 1px 2px;}'), 'p{-moz-border-radius:1px 0 1px 2px;}', '-moz-border-radius: 0 1px 2px => -moz-border-radius: 1px 0 1px 2px')
@@ -145,27 +140,36 @@ sink('clear', function(test, ok, before, after, assert) {
   })
 })
 
-sink('text-align', function(test, ok, before, after, assert) {
-  test('should swap text alignment', function(done) {
+sink('text-align', function (test, ok, before, after, assert) {
+  test('should swap text alignment', function (done) {
     assert.equal(swap('p{text-align:right;}'), 'p{text-align:left;}', 'text-align: left => text-align: right')
     assert.equal(swap('p{text-align:left;}'), 'p{text-align:right;}', 'text-align: right => text-align: left')
     done()
   })
 })
 
-sink('position', function(test, ok, before, after, assert) {
-  test('should swap right/left', function(done) {
+sink('position', function (test, ok, before, after, assert) {
+  test('should swap right/left', function (done) {
     assert.equal(swap('p{left:50%;}'), 'p{right:50%;}', 'left: 50% => right: 50%')
     assert.equal(swap('p{right:50%;}'), 'p{left:50%;}', 'right: 50% => left: 50%')
     done()
   })
 })
 
-sink('direction', function(test, ok, before, after, assert) {
-  test('should swap direction', function(done) {
+sink('direction', function (test, ok, before, after, assert) {
+  test('should swap direction', function (done) {
     assert.equal(swap('p{direction:rtl;}'), 'p{direction:ltr;}', 'direction: rtl => direction: ltr')
     assert.equal(swap('p{direction:ltr;}'), 'p{direction:rtl;}', 'direction: ltr => direction: rtl')
     assert.equal(swap('p{direction:foo;}'), 'p{direction:foo;}', 'direction: foo => direction: foo')
+    done()
+  })
+})
+
+sink('background-position', function (test, ok, before, after, assert) {
+  test('should swap background-position', function (done) {
+    assert.equal(swap('p{background-position:left top;}'), 'p{background-position:right top;}', 'background-position: left top => right top')
+    assert.equal(swap('p{background-position:20px;}'), 'p{background-position:right 20px;}', 'background-position: 20px => right 20px')
+    assert.equal(swap('p{background-position:20% top;}'), 'p{background-position:80% top;}', 'background-position: 20% top => 80% top')
     done()
   })
 })
