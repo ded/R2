@@ -45,7 +45,7 @@ function bgPosition(v) {
   if (v.match(/\bleft\b/)) {
     v = v.replace(/\bleft\b/, 'right')
   } else if (v.match(/\bright\b/)) {
-    v = v.replace(/\bleft\b/, 'right')
+    v = v.replace(/\bright\b/, 'left')
   }
   var m = v.trim().split(/\s+/)
   if (m && (m.length == 1) && v.match(/(\d+)([a-z]{2}|%)/)) {
