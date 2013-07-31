@@ -96,6 +96,14 @@ var propertyMap = {
   , 'right': 'left'
 }
 
+//fix issue https://github.com/ded/R2/issues/21
+var propertyMap_tmp = {}
+for (var k in propertyMap) {
+  propertyMap_tmp[k]=propertyMap[k]
+  propertyMap_tmp["*"+k]="*"+propertyMap[k]
+}
+propertyMap=propertyMap_tmp
+
 var valueMap = {
   'padding': quad,
   'margin': quad,
@@ -130,10 +138,19 @@ function r2(css) {
 
   var result = css.match(/([^{]+\{[^}]+\})+?/g).map(function (rule) {
 
-    // break rule into selector|declaration parts
-    var parts = rule.match(/([^{]+)\{([^}]+)/)
-      , selector = parts[1]
-      , declarations = parts[2]
+
+   // break rule into selector|declaration parts, 
+  	// fix https://github.com/ded/R2/issues/21
+  	var selector, declarations, parts
+    parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)/)
+    if(parts!=null) {
+      selector = parts[1]
+      declarations = parts[2]
+    } else {
+      parts = rule.match(/([^{]+)\{([^}]+)/)
+      selector = parts[1]
+      declarations = parts[2]
+    }
 
     return selector + '{' + declarations.split(/;(?!base64)/).map(function (decl) {
       if (!decl) return ''
