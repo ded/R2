@@ -96,6 +96,14 @@ var propertyMap = {
   , 'right': 'left'
 }
 
+//fix issue https://github.com/ded/R2/issues/21
+var propertyMap_tmp = {}
+for (var k in propertyMap) {
+  propertyMap_tmp[k]=propertyMap[k]
+  propertyMap_tmp["*"+k]="*"+propertyMap[k]
+}
+propertyMap=propertyMap_tmp
+
 var valueMap = {
   'padding': quad,
   'margin': quad,
@@ -128,12 +136,19 @@ function r2(css) {
   // replace multiple spaces with single spaces
   .replace(/\s+/g, ' ')
 
-  var result = css.match(/([^{]+\{[^}]+\})+?/g).map(function (rule) {
+  var result = css.match(/([^{]+\{[^}]+\}+)+?/g).map(function (rule) {
 
-    // break rule into selector|declaration parts
-    var parts = rule.match(/([^{]+)\{([^}]+)/)
-      , selector = parts[1]
-      , declarations = parts[2]
+
+   // break rule into selector|declaration parts, 
+  	// fix https://github.com/ded/R2/issues/21
+  	var selector, declarations, parts, mustache
+    parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)(\}+)/)
+    if(parts==null) {
+      parts = rule.match(/([^{]+)\{([^}]+)(\}+)/)
+    }
+    selector = parts[1]
+    declarations = parts[2]
+    mustache = parts[3]
 
     return selector + '{' + declarations.split(/;(?!base64)/).map(function (decl) {
       if (!decl) return ''
@@ -147,7 +162,7 @@ function r2(css) {
       val = valueMap[prop] ? valueMap[prop](val) : val
       if (!val.match(important) && isImportant) val += '!important'
       return prop + ':' + val + ';'
-    }).join('') + '}'
+    }).join('') + mustache
 
   });
 
