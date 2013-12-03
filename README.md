@@ -51,7 +51,7 @@ Require it as a Node module
 ------------------------------
 
 ``` js
-var output = require('r2').swap(css)
+var output = require('R2').swap(css)
 ```
 
 Test It
