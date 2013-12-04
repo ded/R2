@@ -181,4 +181,28 @@ sink('important', function (test, ok, b, a, assert) {
   })
 })
 
+sink('empty input', function (test, ok, b, a, assert) {
+  test('should not fail on empty input', function (done) {
+    assert.equal(swap(''), '', 'Empty input => Empty output')
+    done()
+  })
+})
+
+sink('empty rule definitions', function (test, ok, b, a, assert) {
+  test('should not fail on empty empty definitions', function (done) {
+    assert.equal(swap('a {}\nb:hover{ left: 10px; }\nh1{  }\nh2 { top: 2px; }'), 'b:hover{right:10px;}h2{top:2px;}', 'Empty rules doesn\'t effect others')
+    done()
+  })
+})
+
+sink('media expressions', function (test, ok, b, a, assert) {
+  test('should handle media declarations', function (done) {
+    assert.equal(
+        swap('@media (max-width: 320px) { #myid { margin-right: 1px; } .cls { padding-left: 3px; } } td { float: left; }'),
+        '@media (max-width:320px){#myid{margin-left:1px;}.cls{padding-right:3px;}}td{float:right;}',
+        'Handled media expression properly')
+    done()
+  })
+})
+
 start()
