@@ -139,9 +139,9 @@ function r2(css) {
   var result = css.match(/([^{]+\{[^}]+\}+)+?/g).map(function (rule) {
 
 
-   // break rule into selector|declaration parts, 
-  	// fix https://github.com/ded/R2/issues/21
-  	var selector, declarations, parts, mustache
+    // break rule into selector|declaration parts,
+    // fix https://github.com/ded/R2/issues/21
+    var selector, declarations, parts, mustache
     parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)(\}+)/)
     if(parts==null) {
       parts = rule.match(/([^{]+)\{([^}]+)(\}+)/)
