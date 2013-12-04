@@ -4,6 +4,7 @@
   "version": "1.3.2",
   "homepage": "https://github.com/ded/r2",
   "author": "Dustin Diaz <dustin@dustindiaz.com>",
+  "maintainers": ["Burak Yigit Kaya <me@byk.im>"],
   "main": "r2.js",
   "preferGlobal": true,
   "repository": {
