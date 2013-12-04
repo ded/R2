@@ -136,16 +136,15 @@ function r2(css) {
   // replace multiple spaces with single spaces
   .replace(/\s+/g, ' ')
 
-  var result = (css.match(/([^{]+\{[^}]+\}+)+?/g) || []).map(function (rule) {
+  var result = (css.match(/([^{}]+\{[^}]+\}+)+?/g) || []).map(function (rule) {
 
 
     // break rule into selector|declaration parts,
     // fix https://github.com/ded/R2/issues/21
     var selector, declarations, parts, mustache
-    parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)(\}+)/)
-    if (parts === null) {
-      parts = rule.match(/([^{]+)\{([^}]+)(\}+)/)
-    }
+    parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)(\}+)/) ||
+            rule.match(/([^{]+)\{([^}]+)(\}+)/)
+
     selector = parts[1]
     declarations = parts[2]
     mustache = parts[3]
