@@ -205,4 +205,12 @@ sink('media expressions', function (test, ok, b, a, assert) {
   })
 })
 
+sink('asterisk', function (test, ok, before, after, assert) {
+  test('should not ignore rules starting with asterisk', function (done) {
+    assert.equal(swap('p{*left:50%;}'), 'p{*right:50%;}', '*left: 50% => *right: 50%')
+    assert.equal(swap('p{*text-align:right;}'), 'p{*text-align:left;}', '*text-align: right => *text-align: left')
+    done()
+  })
+})
+
 start()

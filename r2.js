@@ -96,14 +96,6 @@ var propertyMap = {
   , 'right': 'left'
 }
 
-//fix issue https://github.com/ded/R2/issues/21
-var propertyMap_tmp = {}
-for (var k in propertyMap) {
-  propertyMap_tmp[k]=propertyMap[k]
-  propertyMap_tmp["*"+k]="*"+propertyMap[k]
-}
-propertyMap=propertyMap_tmp
-
 var valueMap = {
   'padding': quad,
   'margin': quad,
@@ -157,10 +149,18 @@ function r2(css) {
         , val = m[2]
         , important = /!important/
         , isImportant = val.match(important)
+        , asterisk = prop.match(/^(\*+)(.+)/, '')
+
+      if (asterisk) {
+        prop = asterisk[2]
+        asterisk = asterisk[1]
+      } else {
+        asterisk = ''
+      }
       prop = propertyMap[prop] || prop
       val = valueMap[prop] ? valueMap[prop](val) : val
       if (!val.match(important) && isImportant) val += '!important'
-      return prop + ':' + val + ';'
+      return asterisk + prop + ':' + val + ';'
     }).join('') + mustache
 
   });
