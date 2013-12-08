@@ -6,6 +6,8 @@
   */
 
 var fs = require('fs')
+  , parser = require('css-parse')
+  , builder = require('css-stringify');
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
@@ -112,62 +114,42 @@ var valueMap = {
   'background-position': bgPosition
 }
 
-function r2(css) {
-
-  css = css.trim() // give it a solid trimming to start
-
-  // comments
-  .replace(/\/\*[\s\S]+?\*\//g, '')
-
-  // line breaks and carriage returns
-  .replace(/[\n\r]/g, '')
-
-  // space between selectors, declarations, properties and values
-  .replace(/\s*([:;,{}])\s*/g, '$1')
-
-  // replace multiple spaces with single spaces
-  .replace(/\s+/g, ' ')
-
-  var result = (css.match(/([^{}]+\{[^}]+\}+)+?/g) || []).map(function (rule) {
-
-
-    // break rule into selector|declaration parts,
-    // fix https://github.com/ded/R2/issues/21
-    var selector, declarations, parts, mustache
-    parts = rule.match(/(@media[^{]+[{]+[^{]*)\{([^}]+)(\}+)/) ||
-            rule.match(/([^{]+)\{([^}]+)(\}+)/)
-
-    selector = parts[1]
-    declarations = parts[2]
-    mustache = parts[3]
-
-    return selector + '{' + declarations.split(/;(?!base64)/).map(function (decl) {
-      if (!decl) return ''
-      var m = decl.match(/([^:]+):(.+)$/)
-      if (!m) return ''
-      var prop = m[1]
-        , val = m[2]
-        , important = /!important/
-        , isImportant = val.match(important)
-        , asterisk = prop.match(/^(\*+)(.+)/, '')
-
-      if (asterisk) {
-        prop = asterisk[2]
-        asterisk = asterisk[1]
-      } else {
-        asterisk = ''
-      }
-      prop = propertyMap[prop] || prop
-      val = valueMap[prop] ? valueMap[prop](val) : val
-      if (!val.match(important) && isImportant) val += '!important'
-      return asterisk + prop + ':' + val + ';'
-    }).join('') + mustache
-
-  });
-
-  return result.join('')
+function processRule(rule) {
+  if (rule.declarations)
+    rule.declarations.forEach(processDeclaration)
+  else if (rule.rules)
+    rule.rules.forEach(processRule)
 }
 
+function processDeclaration(declaration) {
+  var prop = declaration.property
+    , val = declaration.value
+    , important = /!important/
+    , isImportant = val.match(important)
+    , asterisk = prop.match(/^(\*+)(.+)/, '')
+
+  if (asterisk) {
+    prop = asterisk[2]
+    asterisk = asterisk[1]
+  } else {
+    asterisk = ''
+  }
+  prop = propertyMap[prop] || prop
+  val = valueMap[prop] ? valueMap[prop](val) : val
+
+  if (!val.match(important) && isImportant) val += '!important'
+
+  declaration.property = asterisk + prop;
+  declaration.value = val;
+}
+
+function r2(css) {
+  var ast = parser(css)
+
+  ast.stylesheet.rules.forEach(processRule)
+
+  return builder(ast, {compress: true})
+}
 
 module.exports.exec = function (args) {
   var out
