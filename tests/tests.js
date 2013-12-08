@@ -220,4 +220,17 @@ sink('semicolon in content', function (test, ok, before, after, assert) {
   })
 })
 
+sink('comments in property names or values', function (test, ok, before, after, assert) {
+  test('should ignore comments in property names and values', function (done) {
+    assert.equal(swap('hello { padding/*hello*/: 1px 2px;}'), 'hello{padding:1px 2px;}', 'Ignored comment in property name')
+    assert.equal(swap('hello { padding: 1px/* some comment*/ 2px/*another*/;}'), 'hello{padding:1px 2px;}', 'Ignored comments in value')
+    assert.equal(swap(
+        'hello { padding/*I*//*comment*/: 1px/* every*/ /*single*/2px/*space*/;}')
+      , 'hello{padding:1px 2px;}'
+      , 'Ignored comments in both property name and value'
+    )
+    done()
+  })
+})
+
 start()

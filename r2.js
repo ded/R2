@@ -122,8 +122,10 @@ function processRule(rule) {
 }
 
 function processDeclaration(declaration) {
-  var prop = declaration.property
-    , val = declaration.value
+  // RegEx for comments is taken from http://www.w3.org/TR/CSS21/grammar.html
+  var commentRegEx = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g
+    , prop = declaration.property.replace(commentRegEx, '') // remove comments
+    , val = declaration.value.replace(commentRegEx, '')
     , important = /!important/
     , isImportant = val.match(important)
     , asterisk = prop.match(/^(\*+)(.+)/, '')
