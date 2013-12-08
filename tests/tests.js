@@ -233,4 +233,12 @@ sink('comments in property names or values', function (test, ok, before, after, 
   })
 })
 
+sink('comments', function (test, ok, before, after, assert) {
+  test('should ignore comments', function (done) {
+    assert.equal(swap('/*le comment*/ p { margin-left: 5px;}'), 'p{margin-right:5px;}', 'Ignored comment before rule')
+    assert.equal(swap('p { /*le comment*/\nmargin-left: 5px;}'), 'p{margin-right:5px;}', 'Ignored comment before declaration')
+    done()
+  })
+})
+
 start()

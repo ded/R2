@@ -122,6 +122,10 @@ function processRule(rule) {
 }
 
 function processDeclaration(declaration) {
+  // Ignore comments in declarations
+  if (declaration.type !== 'declaration')
+    return
+
   // RegEx for comments is taken from http://www.w3.org/TR/CSS21/grammar.html
   var commentRegEx = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g
     , prop = declaration.property.replace(commentRegEx, '') // remove comments
