@@ -241,4 +241,15 @@ sink('comments', function (test, ok, before, after, assert) {
   })
 })
 
+sink('no compress', function (test, ok, before, after, assert) {
+  test('should not compress if the option is false', function (done) {
+    assert.equal(
+        swap('/* some comment*/\n\np {\n  margin-left: 5px;\n}', { compress: false })
+      , '/* some comment*/\n\np {\n  margin-right: 5px;\n}'
+      , 'Did not compress'
+    )
+    done()
+  })
+})
+
 start()

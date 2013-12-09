@@ -149,18 +149,22 @@ function processDeclaration(declaration) {
   declaration.value = val;
 }
 
-function r2(css) {
-  var ast = parser(css)
+function r2(css, options) {
+  var ast
+  if (!options)
+    options = { compress: true }
 
+  ast = parser(css)
   ast.stylesheet.rules.forEach(processRule)
 
-  return builder(ast, {compress: true})
+  return builder(ast, options)
 }
 
 module.exports.exec = function (args) {
   var out
     , read = args[0]
     , out = args[1]
+    , options = { compress: args[2] !== '--no-compress' }
     , data
 
   /*
@@ -180,7 +184,7 @@ module.exports.exec = function (args) {
 
     process.stdin.on('end', function() {
       if (buffer) {
-        console.log(r2(buffer))
+        console.log(r2(buffer, options))
       }
     });
   } else {
@@ -192,13 +196,13 @@ module.exports.exec = function (args) {
     data = fs.readFileSync(read, 'utf8')
     if (out) {
       console.log('Swapping ' + read + ' to ' + out + '...')
-      fs.writeFileSync(out, r2(data), 'utf8')
+      fs.writeFileSync(out, r2(data, options), 'utf8')
     } else {
-      console.log(r2(data))
+      console.log(r2(data, options))
     }
   }
 }
 
-module.exports.swap = function (css) {
-  return r2(css)
+module.exports.swap = function (css, options) {
+  return r2(css, options)
 }

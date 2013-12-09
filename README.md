@@ -43,7 +43,11 @@ Use it as a CLI
 ### Print to output file
     
     $ r2 input.css output.css
-  
+
+### Print to output file without compression
+
+    $ r2 input.css output.css  --no-compress
+
 ### Read from output of another command
     
     $ lessc input.less | r2 > output.css
