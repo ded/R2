@@ -252,4 +252,14 @@ sink('no compress', function (test, ok, before, after, assert) {
   })
 })
 
+sink('noflip', function (test, ok, before, after, assert) {
+  test('should skip if a rule is preceded with /* @noflip */', function (done) {
+    assert.equal(swap('/* @noflip */ p {margin-left: 5px;}'), 'p{margin-left:5px;}', 'Did not flip')
+    assert.equal(swap('/*@noflip*/p {margin-left: 5px;}'), 'p{margin-left:5px;}', 'Did not flip')
+    assert.equal(swap('p {margin-left: 5px;/*@noflip*/}'), 'p{margin-right:5px;}', 'Did flip')
+    assert.equal(swap('p{margin-left: 5px;}\n/*@noflip*/'), 'p{margin-right:5px;}', 'Did flip')
+    done()
+  })
+})
+
 start()

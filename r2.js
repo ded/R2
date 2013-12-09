@@ -114,7 +114,11 @@ var valueMap = {
   'background-position': bgPosition
 }
 
-function processRule(rule) {
+function processRule(rule, idx, list) {
+  var prev = list[idx-1]
+  if (prev && prev.type === 'comment' && prev.comment.trim() === '@noflip')
+    return;
+
   if (rule.declarations)
     rule.declarations.forEach(processDeclaration)
   else if (rule.rules)
