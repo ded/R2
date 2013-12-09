@@ -1,7 +1,7 @@
 {
   "name": "R2",
   "description": "a CSS LTR ∞ RTL converter",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "homepage": "https://github.com/ded/r2",
   "author": "Dustin Diaz <dustin@dustindiaz.com>",
   "maintainers": ["Burak Yigit Kaya <me@byk.im>"],
