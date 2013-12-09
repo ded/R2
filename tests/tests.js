@@ -199,7 +199,7 @@ sink('media expressions', function (test, ok, b, a, assert) {
   test('should handle media declarations', function (done) {
     assert.equal(
         swap('@media (max-width: 320px) { #myid { margin-right: 1px; } .cls { padding-left: 3px; } } td { float: left; }'),
-        '@media (max-width:320px){#myid{margin-left:1px;}.cls{padding-right:3px;}}td{float:right;}',
+        '@media (max-width: 320px){#myid{margin-left:1px;}.cls{padding-right:3px;}}td{float:right;}',
         'Handled media expression properly')
     done()
   })
@@ -209,6 +209,34 @@ sink('asterisk', function (test, ok, before, after, assert) {
   test('should not ignore rules starting with asterisk', function (done) {
     assert.equal(swap('p{*left:50%;}'), 'p{*right:50%;}', '*left: 50% => *right: 50%')
     assert.equal(swap('p{*text-align:right;}'), 'p{*text-align:left;}', '*text-align: right => *text-align: left')
+    done()
+  })
+})
+
+sink('semicolon in content', function (test, ok, before, after, assert) {
+  test('should not fail when there is a quoted semicolon in the declaration', function (done) {
+    assert.equal(swap('b.broke:before { content:"&darr;";}'), 'b.broke:before{content:"&darr;";}', 'Semicolon didn\'t affect parsing')
+    done()
+  })
+})
+
+sink('comments in property names or values', function (test, ok, before, after, assert) {
+  test('should ignore comments in property names and values', function (done) {
+    assert.equal(swap('hello { padding/*hello*/: 1px 2px;}'), 'hello{padding:1px 2px;}', 'Ignored comment in property name')
+    assert.equal(swap('hello { padding: 1px/* some comment*/ 2px/*another*/;}'), 'hello{padding:1px 2px;}', 'Ignored comments in value')
+    assert.equal(swap(
+        'hello { padding/*I*//*comment*/: 1px/* every*/ /*single*/2px/*space*/;}')
+      , 'hello{padding:1px 2px;}'
+      , 'Ignored comments in both property name and value'
+    )
+    done()
+  })
+})
+
+sink('comments', function (test, ok, before, after, assert) {
+  test('should ignore comments', function (done) {
+    assert.equal(swap('/*le comment*/ p { margin-left: 5px;}'), 'p{margin-right:5px;}', 'Ignored comment before rule')
+    assert.equal(swap('p { /*le comment*/\nmargin-left: 5px;}'), 'p{margin-right:5px;}', 'Ignored comment before declaration')
     done()
   })
 })
