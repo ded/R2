@@ -1,7 +1,5 @@
-[![build status](https://secure.travis-ci.org/ded/R2.png)](http://travis-ci.org/ded/R2)
-[![NPM version](https://badge.fury.io/js/R2.png)](http://badge.fury.io/js/R2)
-R2
----
+R2 [![build status](https://secure.travis-ci.org/ded/R2.png)](http://travis-ci.org/ded/R2) [![NPM version](https://badge.fury.io/js/R2.png)](http://badge.fury.io/js/R2)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 R2 helps you achieve cross-language layout-friendly websites (including bi-directional text). It looks like this:
 
 ``` css
