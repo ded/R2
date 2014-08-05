@@ -172,6 +172,13 @@ sink('background-position', function (test, ok, before, after, assert) {
     assert.equal(swap('p{background-position:20% top;}'), 'p{background-position:80% top;}', 'background-position: 20% top => 80% top')
     done()
   })
+
+  test('should swap multiple background-position values', function (done) {
+    assert.equal(swap('p{background-position:left top, right top;}'), 'p{background-position:right top, left top;}', 'background-position: left top, right top')
+    assert.equal(swap('p{background-position:20px,40px;}'), 'p{background-position:right 20px, right 40px;}', 'background-position: 20px, 40px')
+    assert.equal(swap('p{background-position:20% top , 1% top;}'), 'p{background-position:80% top, 99% top;}', 'background-position: 20% top, 1% top')
+    done()
+  })
 })
 
 sink('important', function (test, ok, b, a, assert) {

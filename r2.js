@@ -42,21 +42,26 @@ function rtltr(v) {
   return v
 }
 
-function bgPosition(v) {
-  if (v.match(/\bleft\b/)) {
-    v = v.replace(/\bleft\b/, 'right')
-  } else if (v.match(/\bright\b/)) {
-    v = v.replace(/\bright\b/, 'left')
-  }
-  var m = v.trim().split(/\s+/)
-  if (m && (m.length == 1) && v.match(/(\d+)([a-z]{2}|%)/)) {
-    v = 'right ' + v
-  }
-  if (m && m.length == 2 && m[0].match(/\d+%/)) {
-    // 30% => 70% (100 - x)
-    v = (100 - parseInt(m[0], 10)) + '% ' + m[1]
-  }
-  return v
+function bgPosition(values) {
+  return values.split(/\s*,\s*/g).map(function (v) {
+    if (v.match(/\bleft\b/)) {
+      v = v.replace(/\bleft\b/, 'right')
+    } else if (v.match(/\bright\b/)) {
+      v = v.replace(/\bright\b/, 'left')
+    }
+
+    var m = v.trim().split(/\s+/)
+    if (m && (m.length == 1) && v.match(/(\d+)([a-z]{2}|%)/)) {
+      v = 'right ' + v
+    }
+
+    if (m && m.length == 2 && m[0].match(/\d+%/)) {
+      // 30% => 70% (100 - x)
+      v = (100 - parseInt(m[0], 10)) + '% ' + m[1]
+    }
+
+    return v
+  }).join(', ')
 }
 
 var propertyMap = {
