@@ -6,8 +6,7 @@
   */
 
 var fs = require('fs')
-  , parser = require('css-parse')
-  , builder = require('css-stringify');
+  , css = require('css');
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
@@ -130,10 +129,8 @@ function processDeclaration(declaration) {
   if (declaration.type !== 'declaration')
     return
 
-  // RegEx for comments is taken from http://www.w3.org/TR/CSS21/grammar.html
-  var commentRegEx = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g
-    , prop = declaration.property.replace(commentRegEx, '') // remove comments
-    , val = declaration.value.replace(commentRegEx, '')
+  var prop = declaration.property
+    , val = declaration.value
     , important = /!important/
     , isImportant = val.match(important)
     , asterisk = prop.match(/^(\*+)(.+)/, '')
@@ -153,15 +150,15 @@ function processDeclaration(declaration) {
   declaration.value = val;
 }
 
-function r2(css, options) {
+function r2(cssString, options) {
   var ast
   if (!options)
     options = { compress: true }
 
-  ast = parser(css)
+  ast = css.parse(cssString)
   ast.stylesheet.rules.forEach(processRule)
 
-  return builder(ast, options)
+  return css.stringify(ast, options)
 }
 
 module.exports.exec = function (args) {
@@ -207,6 +204,6 @@ module.exports.exec = function (args) {
   }
 }
 
-module.exports.swap = function (css, options) {
-  return r2(css, options)
+module.exports.swap = function (cssString, options) {
+  return r2(cssString, options)
 }
