@@ -1,7 +1,7 @@
 {
   "name": "R2",
   "description": "a CSS LTR ∞ RTL converter",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "homepage": "https://github.com/ded/r2",
   "author": "Dustin Diaz <dustin@dustindiaz.com>",
   "maintainers": ["Burak Yigit Kaya <me@byk.im>"],
@@ -21,7 +21,8 @@
     "bin": "bin"
   },
   "dependencies": {
-    "css": "~2.0.0"
+    "css": "~2.0.0",
+    "nopt": "~3.0.1"
   },
   "devDependencies": {
     "sink-test": ">= 1.0.1"

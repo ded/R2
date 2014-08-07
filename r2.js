@@ -6,7 +6,8 @@
   */
 
 var fs = require('fs')
-  , css = require('css');
+  , css = require('css')
+  , nopt = require('nopt');
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
@@ -170,8 +171,14 @@ module.exports.exec = function (args) {
   var out
     , read = args[0]
     , out = args[1]
-    , options = { compress: args[2] !== '--no-compress' }
+    , knownOpts = {
+        compress: Boolean,
+        sourcemap: Boolean
+      }
+    , options = nopt(knownOpts, null, args)
     , data
+
+  options.compress = options.compress !== false // defaults to true
 
   /*
   /  If no read arg then read from stdin
@@ -190,7 +197,7 @@ module.exports.exec = function (args) {
 
     process.stdin.on('end', function() {
       if (buffer) {
-        console.log(r2(buffer, options))
+        console.log(r2(buffer))
       }
     });
   } else {
@@ -202,9 +209,21 @@ module.exports.exec = function (args) {
     data = fs.readFileSync(read, 'utf8')
     if (out) {
       console.log('Swapping ' + read + ' to ' + out + '...')
-      fs.writeFileSync(out, r2(data, options), 'utf8')
+      var result = r2(data, options)
+        , mapPath
+        , mapSuffix
+
+      if (options.sourcemap) {
+        mapPath = out + '.map'
+        mapSuffix = '\n/*# sourceMappingURL=' + mapPath + ' */'
+
+        fs.writeFileSync(out, result.code + mapSuffix, 'utf8')
+        fs.writeFileSync(mapPath, JSON.stringify(result.map), 'utf8')
+      } else {
+        fs.writeFileSync(out, result, 'utf8')
+      }
     } else {
-      console.log(r2(data, options))
+      console.log(r2(data))
     }
   }
 }
