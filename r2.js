@@ -151,6 +151,19 @@ function processRuleSelectors(rule, config) {
   return true;
 }
 
+function processRules(rules, config) {
+    var ignoring = false;
+    rules.forEach(function(rule, idx, list) {
+        if (rule.type === 'comment' && rule.comment.trim() === 'R2:BeginIgnore') {
+          ignoring = true;
+      } else if (rule.type ==='comment' && rule.comment.trim() === 'R2:EndIgnore') {
+            ignoring = false;
+        } else if (!ignoring) {
+          processRule(rule, idx, list, config);
+        }
+    });
+}
+
 function processRule(rule, idx, list, config) {
   var prev = list[idx-1]
   if (prev && prev.type === 'comment' && prev.comment.trim() === '@noflip')
@@ -165,9 +178,7 @@ function processRule(rule, idx, list, config) {
       processDeclaration(declaration, config);
     });
   } else if (rule.rules) {
-    rule.rules.forEach(function(rule, idx, list) {
-      processRule(rule, idx, list, config);
-    });
+      processRules(rule.rules, config);
   }
 }
 
@@ -203,9 +214,7 @@ function r2(cssString, options, config) {
     options = { compress: true }
 
   ast = css.parse(cssString, { position: true })
-  ast.stylesheet.rules.forEach(function(rule, idx, list) {
-    processRule(rule, idx, list, config || {});
-  });
+  processRules(ast.stylesheet.rules, config || {})
 
   return css.stringify(ast, options)
 }

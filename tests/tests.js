@@ -277,4 +277,21 @@ sink('[dir=(rtl|ltr)]', function (test, ok, before, after, assert) {
   })
 })
 
+sink('R2:BeginIgnore', function (test, ok, before, after, assert) {
+  test('should skip if a rule is preceded with [dir=rtl]', function (done) {
+    var testStr = '/* R2:BeginIgnore */\r\n'
+    testStr += 'div {margin-left: 5px;}\r\n';
+    testStr += 'input {margin-left: 5px;}\r\n';
+    testStr += '/* R2:EndIgnore */\r\n';
+    testStr += 'p {margin-left: 5px;}\r\n';
+
+    var expected = 'div{margin-left:5px;}';
+    expected += 'input{margin-left:5px;}';
+    expected += 'p{margin-right:5px;}';
+    assert.equal(swap(testStr), expected, 'Did not flip')
+
+    done()
+  })
+})
+
 start()
