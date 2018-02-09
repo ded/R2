@@ -10,6 +10,9 @@ var fs = require('fs')
   , css = require('css')
   , path = require('path');
 
+// matches selectors containing "[dir=(ltr|rtl)]"
+var dirOverrideRegex = /\[\s*dir\s*=\s*("|')?(ltr|rtl)("|')?\s*\]/;
+
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
   if ((m = v.trim().split(/\s+/)) && m.length === 4) {
@@ -128,16 +131,24 @@ function processRuleSelectors(rule, config) {
   var selectorMap = config.selectorMap
     , selectors = rule.selectors;
 
-  if (!selectors || selectors.length === 0 || !selectorMap) {
-    return;
+  if (!selectors || selectors.length === 0) {
+    return true;
   }
 
   for (var i = 0; i < selectors.length; i++) {
-    var newSelector = selectorMap[selectors[i]];
-    if (newSelector) {
-      selectors[i] = newSelector;
+    // check for dir=(ltr|rtl) override styles, which should be ignored
+    if (selectors[i].match(dirOverrideRegex)) {
+      return false;
+    }
+    if (selectorMap) {
+      var newSelector = selectorMap[selectors[i]];
+      if (newSelector) {
+        selectors[i] = newSelector;
+      }
     }
   }
+
+  return true;
 }
 
 function processRule(rule, idx, list, config) {
@@ -145,7 +156,9 @@ function processRule(rule, idx, list, config) {
   if (prev && prev.type === 'comment' && prev.comment.trim() === '@noflip')
     return;
 
-  processRuleSelectors(rule, config);
+  if (!processRuleSelectors(rule, config)) {
+    return;
+  };
 
   if (rule.declarations) {
     rule.declarations.forEach(function(declaration) {

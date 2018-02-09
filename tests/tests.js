@@ -269,4 +269,12 @@ sink('noflip', function (test, ok, before, after, assert) {
   })
 })
 
+sink('[dir=(rtl|ltr)]', function (test, ok, before, after, assert) {
+  test('should skip if a rule is preceded with [dir=rtl]', function (done) {
+    assert.equal(swap('[dir=rtl] p {margin-left: 5px;}'), '[dir=rtl] p{margin-left:5px;}', 'Did not flip')
+    assert.equal(swap('[dir=ltr] p {margin-left: 5px;}'), '[dir=ltr] p{margin-left:5px;}', 'Did not flip')
+    done()
+  })
+})
+
 start()
