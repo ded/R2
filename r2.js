@@ -4,13 +4,15 @@
   * https://github.com/ded/r2
   * License MIT
   */
+  /* jshint ignore:start */
 
 var fs = require('fs')
-  , css = require('css');
+  , css = require('css')
+  , path = require('path');
 
 function quad(v, m) {
   // 1px 2px 3px 4px => 1px 4px 3px 2px
-  if ((m = v.trim().split(/\s+/)) && m.length == 4) {
+  if ((m = v.trim().split(/\s+/)) && m.length === 4) {
     return [m[0], m[3], m[2], m[1]].join(' ')
   }
   return v
@@ -21,7 +23,7 @@ function quad_radius(v) {
   // 1px 2px 3px 4px => 1px 2px 4px 3px
   // since border-radius: top-left top-right bottom-right bottom-left
   // will be border-radius: top-right top-left bottom-left bottom-right
-  if (m && m.length == 4) {
+  if (m && m.length === 4) {
     return [m[1], m[0], m[3], m[2]].join(' ')
   } else if (m && m.length == 3) {
     // super odd how this works
@@ -37,8 +39,12 @@ function direction(v) {
 }
 
 function rtltr(v) {
-  if (v.match(/left/)) return 'right'
-  if (v.match(/right/)) return 'left'
+  if (v.match(/left/)) {
+      return 'right';
+  }
+  if (v.match(/right/)) {
+      return 'left';
+  }
   return v
 }
 
@@ -118,18 +124,41 @@ var valueMap = {
   'background-position': bgPosition
 }
 
-function processRule(rule, idx, list) {
+function processRuleSelectors(rule, config) {
+  var selectorMap = config.selectorMap
+    , selectors = rule.selectors;
+
+  if (!selectors || selectors.length === 0 || !selectorMap) {
+    return;
+  }
+
+  for (var i = 0; i < selectors.length; i++) {
+    var newSelector = selectorMap[selectors[i]];
+    if (newSelector) {
+      selectors[i] = newSelector;
+    }
+  }
+}
+
+function processRule(rule, idx, list, config) {
   var prev = list[idx-1]
   if (prev && prev.type === 'comment' && prev.comment.trim() === '@noflip')
     return;
 
-  if (rule.declarations)
-    rule.declarations.forEach(processDeclaration)
-  else if (rule.rules)
-    rule.rules.forEach(processRule)
+  processRuleSelectors(rule, config);
+
+  if (rule.declarations) {
+    rule.declarations.forEach(function(declaration) {
+      processDeclaration(declaration, config);
+    });
+  } else if (rule.rules) {
+    rule.rules.forEach(function(rule, idx, list) {
+      processRule(rule, idx, list, config);
+    });
+  }
 }
 
-function processDeclaration(declaration) {
+function processDeclaration(declaration, config) {
   // Ignore comments in declarations
   if (declaration.type !== 'declaration')
     return
@@ -155,13 +184,15 @@ function processDeclaration(declaration) {
   declaration.value = val;
 }
 
-function r2(cssString, options) {
+function r2(cssString, options, config) {
   var ast
   if (!options)
     options = { compress: true }
 
-  ast = css.parse(cssString)
-  ast.stylesheet.rules.forEach(processRule)
+  ast = css.parse(cssString, { position: true })
+  ast.stylesheet.rules.forEach(function(rule, idx, list) {
+    processRule(rule, idx, list, config || {});
+  });
 
   return css.stringify(ast, options)
 }
@@ -172,6 +203,12 @@ module.exports.exec = function (args) {
     , out = args[1]
     , options = { compress: args[2] !== '--no-compress' }
     , data
+    , configPath = path.join(process.cwd(), 'r2-conig.js')
+    , config = {}
+
+  if (fs.existsSync(configPath)) {
+    config = require(configPath);
+  }
 
   /*
   /  If no read arg then read from stdin
@@ -199,16 +236,17 @@ module.exports.exec = function (args) {
     /  To stdout: r2 styles.css
     /  To file: r2 styles.cc styles-rtl.css
     */
-    data = fs.readFileSync(read, 'utf8')
+    data = fs.readFileSync(read, 'utf8');
+    config = config[path.basename(read)] || {};
     if (out) {
       console.log('Swapping ' + read + ' to ' + out + '...')
-      fs.writeFileSync(out, r2(data, options), 'utf8')
+      fs.writeFileSync(out, r2(data, options, config), 'utf8')
     } else {
-      console.log(r2(data, options))
+      console.log(r2(data, options, config))
     }
   }
 }
 
-module.exports.swap = function (cssString, options) {
-  return r2(cssString, options)
+module.exports.swap = function (cssString, options, config) {
+  return r2(cssString, options, config)
 }
