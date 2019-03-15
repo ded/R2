@@ -4,7 +4,9 @@
   "version": "1.4.3",
   "homepage": "https://github.com/ded/r2",
   "author": "Dustin Diaz <dustin@dustindiaz.com>",
-  "maintainers": ["Burak Yigit Kaya <me@byk.im>"],
+  "maintainers": [
+    "Burak Yigit Kaya <me@byk.im>"
+  ],
   "main": "r2.js",
   "preferGlobal": true,
   "repository": {
@@ -21,7 +23,7 @@
     "bin": "bin"
   },
   "dependencies": {
-    "css": "~2.0.0"
+    "css": "^2.2.4"
   },
   "devDependencies": {
     "sink-test": ">= 1.0.1"
