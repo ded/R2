@@ -2,33 +2,18 @@
   "name": "R2",
   "description": "a CSS LTR ∞ RTL converter",
   "version": "1.4.3",
-  "homepage": "https://github.com/ded/r2",
-  "author": "Dustin Diaz <dustin@dustindiaz.com>",
-  "maintainers": [
-    "Burak Yigit Kaya <me@byk.im>"
-  ],
-  "main": "r2.js",
-  "preferGlobal": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ded/R2.git"
-  },
-  "engines": {
-    "node": ">= 0.8.0"
-  },
-  "bin": {
-    "r2": "bin/r2"
-  },
-  "directories": {
-    "bin": "bin"
+  "scripts": {
+    "test": "node tests/tests.js",
+    "build": "rollup -c rollup.config.js"
   },
   "dependencies": {
-    "css": "~2.0.0"
+    "css": "^2.2.4"
   },
   "devDependencies": {
-    "sink-test": ">= 1.0.1"
-  },
-  "scripts": {
-    "test": "node tests/tests.js"
+    "rollup": "^1.11.3",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "sink-test": "^1.0.2"
   }
 }
