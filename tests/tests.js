@@ -1,7 +1,7 @@
 var sinktest = require('sink-test')
   , sink = sinktest.sink
   , start = sinktest.start
-  , r2 = require('../r2')
+  , r2 = require('../dist/r2')
   , swap = r2.swap
 
 sink('border', function(test, ok, before, after, assert) {
