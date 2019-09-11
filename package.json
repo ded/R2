@@ -21,7 +21,7 @@
     "bin": "bin"
   },
   "dependencies": {
-    "css": "~2.2.4"
+    "css": "~2.2.2"
   },
   "devDependencies": {
     "sink-test": ">= 1.0.1"
