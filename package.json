@@ -12,7 +12,7 @@
     "url": "https://github.com/ded/R2.git"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "bin": {
     "r2": "bin/r2"
