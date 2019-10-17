@@ -1,6 +1,6 @@
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
-import builtins from 'rollup-plugin-node-builtins';
+import builtins from 'builtin-modules'
 
 export default {
     input: 'r2.js',
@@ -8,9 +8,9 @@ export default {
       file: 'dist/r2.js',
       format: 'cjs'
     },
+    external: builtins,
     plugins: [
       resolve(),
-      commonjs(),
-      builtins()
+      commonjs()
     ]
   };
