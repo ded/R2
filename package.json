@@ -1,7 +1,15 @@
 {
-  "name": "R2",
+  "name": "@pureconnect/r2",
   "description": "a CSS LTR ∞ RTL converter",
   "version": "1.4.3",
+  "bin": {
+    "r2": "./bin/r2"
+  },
+  "main": "dist/r2.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
   "scripts": {
     "test": "node tests/tests.js",
     "build": "rollup -c rollup.config.js"
